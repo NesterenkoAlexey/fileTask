@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,58 +18,65 @@ public class FileTask {
 		
 		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 		String word = "";
-				List<String> str = new ArrayList<>();
-
-	        BufferedReader reader = null;
+		
+		List<String> str = new ArrayList<>();
+		
+		String wayToFile = "fileExample.txt";
+		
+		if (Path.of(wayToFile).isAbsolute() != true) {
+			Path.of(wayToFile).toAbsolutePath();
+		}
+		
+	    BufferedReader reader = null;
 	        
-	        try {
-	            reader = new BufferedReader(new FileReader(new File("D:\\JAVA\\fileExample.txt")));
-	            int c;
-	            //read the file by symphols
-	            while ((c = reader.read()) != -1) { 
-	                char ch = (char) c;
-	            	//compare symbol with latin character
-	                if (chars.contains(Character.toString(ch))) {
-	            		word += ch;
-	            	}
-	            	else {
-	            		if (word != "") {
-	            			str.add(word);
-	            			word = "";
-	            		}		
-	            	}
+	    try {
+	    	reader = new BufferedReader(new FileReader(new File(wayToFile)));
+	    	int c;
+	        //read the file by symphols
+	        while ((c = reader.read()) != -1) { 
+	        	char ch = (char) c;
+	            //compare symbol with latin character
+	            if (chars.contains(Character.toString(ch))) {
+	            	word += ch;
 	            }
-	            reader.close();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        } finally {
-	            if (reader != null) {
-	                try {
-	                    reader.close();
-	                } catch (IOException e) {
-	                    e.printStackTrace();
-	                }
+	            else {
+	            	if (word != "") {
+	            		str.add(word);
+	            		word = "";
+	            	}		
 	            }
 	        }
-	        //sort alphabetically
+	        reader.close();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    } finally {
+	        if (reader != null) {
+	            try {
+	                reader.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+	    //sort alphabetically
 	        
-	        Collections.sort(str);
-	        System.out.println("All words int text file - "  + str);
+	    Collections.sort(str);
+	    System.out.println("All words int text file - "  + str);
 	        
 	//        Set<String> wordSet = new TreeSet(str);
-	        Map<String , Integer> mapSet = new TreeMap();
+	    Map<String , Integer> mapSet = new TreeMap();
 	       
-	        for (String s : str) {
-	        	if (mapSet.containsKey(s)) {
-	        		mapSet.put(s , mapSet.get(s) + 1);
-	        	} else {
-	        		mapSet.put(s , 1);
-	        	}
+	    for (String s : str) {
+	        if (mapSet.containsKey(s)) {
+	        	mapSet.put(s , mapSet.get(s) + 1);
+	        } else {
+	        	mapSet.put(s , 1);
 	        }
+	    }
 	        
-	        System.out.println("Words and Number of repetitions of words - " + mapSet);
+	    System.out.println("Words and Number of repetitions of words - " + mapSet);
 	        
-	   }
+	}
 
 }
 
